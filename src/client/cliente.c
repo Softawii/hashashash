@@ -2,6 +2,7 @@
 // Created by yancf on 05/07/2022.
 //
 #include "../../include/client/cliente.h"
+#include "../../include/core/core.h"
 
 var cliente_from_stream(FILE * file) {
 
@@ -27,7 +28,7 @@ void cliente_show(cliente * c) {
     printf("\tID: %7d, Name: %10s, Birth: %s\n", c->id, c->nome, c->nascimento);
 }
 
-int cliente_hash(cliente * a, int divisor) {
+int cliente_hash(var a, int divisor) {
     int p1 = ((cliente*) a)->id;
     return p1 % divisor;
 }
