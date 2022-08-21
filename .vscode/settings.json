@@ -1,6 +1,10 @@
 {
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
-        "hash.h": "c"
+        "hash.h": "c",
+        "stdbool.h": "c",
+        "cliente.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
     }
 }

@@ -1,5 +1,6 @@
 #ifndef HASH_HASH_H
 #define HASH_HASH_H
+#define DEBUG
 
 #include <stdbool.h>
 #include "../core/core.h"
@@ -10,64 +11,57 @@ typedef struct hash_table hash_table;
 // Typedef to abstract the hash function.
 typedef int (hash_function)(var a, int size);
 
+typedef struct hash_element hash_element;
+
 struct hash_element {
     var element;
-    var * next;
-    bool is_free;
+    struct hash_element * next;
+    int flag;
 };
 
-struct hash_table {
-    int size;
-    int count;
-    struct hash_element * table;
+struct hash_table
+{
+    FILE *file;
     hash_function * h;
+    comparator * comp;
+    from_stream * from;
+    to_stream * to;
 };
 
 // Initializes a hash table.
-hash_table* hash_init(char * file_name, size_t size, hash_function hash_function) {
-    hash_table * table = (hash_table *) malloc(sizeof(hash_table));
-    table->size = size;
-    table->count = 0;
-    table->table = (struct hash_element *) malloc(sizeof(struct hash_element) * size);
-    table->h = hash_function;
-    for(int i = 0; i < size; i++) {
-        table->table[i].is_free = true;
-    }
+hash_table* hash_init(char * file_name, size_t size, size_t element_size, hash_function hash_function, comparator comparator) {
 
-    #ifdef DEBUG
-    printf("Hash table initialized with size %d\n", size);
-    #endif
+    hash_table * table = (hash_table *) malloc(sizeof(hash_table));
+    table->file = fopen(file_name, "wb+");
+    table->h = hash_function;
+    table->comp = comparator;
+
+    int temp = 0;
+    for (int i = 0; i < size; i++) {
+        fwrite(&temp, element_size, 1, table->file);
+        fwrite(&temp, sizeof(int), 1, table->file);
+        fwrite(&temp, sizeof(int), 1, table->file);
+    }
 
     return table;
 }
 
 void hash_free(hash_table * table) {
-    for(int i = 0; i < table->size; i++) if(table->table[i].is_free == false) free(table->table[i].element);
-    free(table->table);
-    free(table);   
+    free(table->file); 
+    free(table);
 }
 
 // CRUD
 void hash_insert(hash_table* table, var element) {
-    int index = table->h(element, table->size);
-
-    #ifdef DEBUG
-    printf("[DEBUG] Index %d.\n", index);
-    #endif
-
-    if(table->table[index].is_free == true) {
-        table->table[index].element = element;
-        table->table[index].is_free = false;
-        table->count++;
-    } else {
-        // TODO: implement
-        #ifdef DEBUG
-        printf("[DEBUG] Collision detected at index %d.\n", index);
-        #endif
-    }
 
 }
-void hash_get   (hash_table* table, int key);     // Read
+
+
+int hash_search (hash_table* table, var element){
+
+}
+
+
 void hash_update(hash_table* table, var element); // Update
 void hash_remove(hash_table* table, int key);     // Delete
 

@@ -44,5 +44,17 @@ int cliente_hash(var a, int divisor) {
     return p1 % divisor;
 }
 
+int id_comparator (cliente * a, cliente * b) {
+    int p1 = ((cliente*) a)->id;
+    int p2 = ((cliente*) b)->id;
+
+    if(p1 > p2)
+        return 1;
+    else if(p1 == p2)
+        return 0;
+    else
+        return -1;
+}
+
 #endif //HASH_CLIENTE_H
 
