@@ -26,5 +26,12 @@ int main(int argc, char **argv) {
 
     hash_read(table, 3);
 
+
+    int t;
+    int a = hash_search(table, client, &t);
+
+    printf("a = %d, end = %d\n", a, t);
+    //hash_read(table, 3);
+
     hash_free(table);
 }
