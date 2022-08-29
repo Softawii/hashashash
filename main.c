@@ -20,5 +20,11 @@ int main(int argc, char **argv) {
     strcpy(client->nascimento, "05/07/2022");
     printf("%d\n", cliente_hash(client, table_size)); 
 
-    hash_table * table = hash_init("hash.dat", table_size, sizeof(cliente), cliente_hash, id_comparator);
+    hash_table * table = hash_init("hash.dat", table_size, get_cliente_size(), cliente_hash, id_comparator, cliente_from_stream, cliente_to_stream);
+
+    hash_insert(table, client);
+
+    hash_read(table, 3);
+
+    hash_free(table);
 }

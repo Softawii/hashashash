@@ -25,14 +25,19 @@ var cliente_from_stream(FILE * file) {
 
     if(read == 0) return NULL;
 
+    #ifdef DEBUG
+        printf("ID: %d | Nome: %s | Nascimento: %s\n", temp->id, temp->nome, temp->nascimento);
+    #endif
+
     // Return
     return temp;
 }
 
-void cliente_to_stream(FILE * file, cliente * c) {
-    fwrite(&c->id, sizeof(c->id), 1, file);
-    fwrite(c->nome, sizeof(c->nome), 1, file);
-    fwrite(c->nascimento, sizeof(c->nascimento), 1, file);
+void cliente_to_stream(FILE * file, var c) {
+    cliente *tempCliente = (cliente*) c;
+    fwrite(&tempCliente->id, sizeof(tempCliente->id), 1, file);
+    fwrite(tempCliente->nome, sizeof(tempCliente->nome), 1, file);
+    fwrite(tempCliente->nascimento, sizeof(tempCliente->nascimento), 1, file);
 }
 
 void cliente_show(cliente * c) {
@@ -44,7 +49,7 @@ int cliente_hash(var a, int divisor) {
     return p1 % divisor;
 }
 
-int id_comparator (cliente * a, cliente * b) {
+int id_comparator (var  a, var  b) {
     int p1 = ((cliente*) a)->id;
     int p2 = ((cliente*) b)->id;
 
@@ -56,5 +61,11 @@ int id_comparator (cliente * a, cliente * b) {
         return -1;
 }
 
+int get_cliente_size () {
+    cliente cliente;
+    return sizeof(cliente.nome) + sizeof(cliente.nascimento) + sizeof(cliente.id);
+}
+
 #endif //HASH_CLIENTE_H
+
 
