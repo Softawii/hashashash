@@ -3,7 +3,6 @@
 #include <string.h>
 #include "include/hash.h"
 #include "include/cliente.h"
-#define DEBUG
 
 int main(int argc, char **argv) {
     int table_size = 7;
@@ -14,24 +13,36 @@ int main(int argc, char **argv) {
     //     }
     // }
 
-    cliente * client = (cliente *) malloc(sizeof(cliente));
-    client->id = 3;
-    strcpy(client->nome, "Yancf");
-    strcpy(client->nascimento, "05/07/2022");
-    printf("%d\n", cliente_hash(client, table_size)); 
+    cliente * client1 = (cliente *) malloc(sizeof(cliente));
+    client1->id = 3;
+    strcpy(client1->nome, "Yancf");
+    strcpy(client1->nascimento, "05/07/2022");
 
-    hash_table * table = hash_init("hash.dat", table_size, get_cliente_size(), cliente_hash, id_comparator, cliente_from_stream, cliente_to_stream);
+    cliente * client2 = (cliente *) malloc(sizeof(cliente));
+    client2->id = 14;
+    strcpy(client2->nome, "Sérgio Felipe");
+    strcpy(client2->nascimento, "20/02/2001");
 
-    hash_insert(table, client);
+    cliente * client3 = (cliente *) malloc(sizeof(cliente));
+    client3->id = 10;
+    strcpy(client3->nome, "Nicolas Magalhães");
+    strcpy(client3->nascimento, "10/10/2010");
 
-    hash_read(table, 3);
+    hash_table * table = hash_init("hash.dat", table_size, get_cliente_size(), cliente_hash, id_comparator, cliente_from_stream, cliente_to_stream, cliente_show);
 
+    hash_insert(table, client1);
+    hash_insert(table, client2);
+    hash_insert(table, client3);
+
+    hash_remove(table, client1);
 
     int t;
-    int a = hash_search(table, client, &t);
+    int a = hash_search(table, client1, &t);
 
-    printf("a = %d, end = %d\n", a, t);
-    //hash_read(table, 3);
+
+    hash_show(table);
 
     hash_free(table);
+
+    return 0;
 }

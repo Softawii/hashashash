@@ -3,16 +3,27 @@
 //
 #include "../include/cliente.h"
 #include "../include/core.h"
+#include <stdlib.h>
 
 var cliente_from_stream(FILE * file) {
 
     cliente *temp = (cliente *) malloc(sizeof(cliente));
 
-    fread(&temp->id, sizeof(temp->id), 1, file);
-    fread(temp->nome, sizeof(temp->nome), 1, file);
-    size_t read = fread(temp->nascimento, sizeof(temp->nascimento), 1, file);
+    if(!fread(&temp->id, sizeof(temp->id), 1, file)) {
+        printf("ERRO: Erro ao ler o id do cliente\n");
+        return NULL;
+    }
 
-    if(read == 0) return NULL;
+    if(!fread(temp->nome, sizeof(temp->nome), 1, file)) {
+        printf("ERRO: Erro ao ler o nome do cliente\n");
+        return NULL;
+    }
+
+    if(!fread(temp->nascimento, sizeof(temp->nascimento), 1, file)) {
+        printf("ERRO: Erro ao ler o nascimento do cliente\n");
+        return NULL;
+    }
+
 
     #ifdef DEBUG
         printf("ID: %d | Nome: %s | Nascimento: %s\n", temp->id, temp->nome, temp->nascimento);
@@ -29,8 +40,9 @@ void cliente_to_stream(FILE * file, var c) {
     fwrite(tempCliente->nascimento, sizeof(tempCliente->nascimento), 1, file);
 }
 
-void cliente_show(cliente * c) {
-    printf("\tID: %7d, Name: %10s, Birth: %s\n", c->id, c->nome, c->nascimento);
+void cliente_show(var c) {
+    cliente *tempCliente = (cliente*) c;
+    printf("ID: %d, Name: %s, Birth: %s", tempCliente->id, tempCliente->nome, tempCliente->nascimento);
 }
 
 int cliente_hash(var a, int divisor) {

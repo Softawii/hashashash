@@ -19,7 +19,7 @@ var cliente_from_stream(FILE * file);
 
 void cliente_to_stream(FILE * file, var c);
 
-void cliente_show(cliente * c);
+void cliente_show(var c);
 
 int cliente_hash(var a, int divisor);
 
