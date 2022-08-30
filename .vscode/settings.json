@@ -5,6 +5,7 @@
         "stdbool.h": "c",
         "cliente.h": "c",
         "stdlib.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "core.h": "c"
     }
 }

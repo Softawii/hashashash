@@ -1,19 +1,8 @@
 //
-// Created by yancf on 26/06/2022.
+// Created by yancf on 05/07/2022.
 //
-
-#ifndef HASH_CLIENTE_H
-#define HASH_CLIENTE_H
-
-#include "../core/core.h"
-#include <stdio.h>
-
-typedef struct{
-    int id;
-    char nome[50];
-    char nascimento[11];
-}cliente;
-
+#include "../include/cliente.h"
+#include "../include/core.h"
 
 var cliente_from_stream(FILE * file) {
 
@@ -65,7 +54,3 @@ int get_cliente_size () {
     cliente cliente;
     return sizeof(cliente.nome) + sizeof(cliente.nascimento) + sizeof(cliente.id);
 }
-
-#endif //HASH_CLIENTE_H
-
-

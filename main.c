@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "include/hash/hash.h"
-#include "include/client/cliente.h"
+#include "include/hash.h"
+#include "include/cliente.h"
 #define DEBUG
 
 int main(int argc, char **argv) {
