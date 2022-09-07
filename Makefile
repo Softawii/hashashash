@@ -2,19 +2,16 @@
 PROJ_NAME=hashashash
 
 # .c files
-C_SOURCE=$(wildcard * .c)
-
-# .h files
-H_SOURCE=$(wildcard * .h)
+C_SOURCE=$(wildcard src/*.c)
 
 # .o files
-OBJ=$(C_SOURCE:.c=.o)
+OBJ:=$(C_SOURCE:.c=.o)
 
 # Compiler
 CC=gcc
 
 # Flags
-CC_FLAGS= -O3 -c
+CC_FLAGS= -Wall -O3
 
 ################################
 # Compilation
@@ -22,14 +19,24 @@ CC_FLAGS= -O3 -c
 
 all: $(PROJ_NAME)
 
-$(PROJ_NAME): $(OBJ)
-	@echo "Generating binary..."
-	ar -cvq hashashash.a *.o
-	gcc main.c -o tests hashashash.a
-	rm  *.o
+$(PROJ_NAME): $(OBJ) lib compile clean
 
-%.o: %.c %.h
-	$(CC) $< $(CC_FLAGS)
+lib:
+	@echo "\nGenerating library..."
+	ar -cvq libhashashash.a $(OBJ)
+
+compile:
+	@echo "\nCompiling..."
+	$(CC) main.c -o tests libhashashash.a -DHASH_DEBUG
 
 clean:
-	rm  *.o
+	@echo "\nRemoving libs and objects..."
+	rm libhashashash.a
+	rm  src/*.o
+
+$(OBJ): %.o: %.c
+	@echo "\nCompiling $(<F)..."
+	$(CC) $(CC_FLAGS) -c $< -o $@
+
+debug: CC_FLAGS += -DHASH_DEBUG
+debug: all
